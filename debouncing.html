@@ -1,0 +1,58 @@
+<!doctype html>
+<html class="no-js" lang="">
+ 
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+ 
+<body>
+
+  <h1>Debouncing...</h1>
+  <button id="the-button">Button</button>
+  <div>
+    <textarea id="the-textarea" placeholder="Text eingeben" rows="4" style="max-width:80%; width:500px"></textarea>
+    <div id="the-feedback"></div>
+  </div>
+ 
+  <script type="module">
+	 
+	 const DEBOUNCE_THRESHOLD_MS = 1000;
+	 
+	 const $feedback_box = document.getElementById("the-feedback");
+	 
+	 //event listener callback that should be 
+	 //debounced
+	const funA = function(str) {
+		console.log(String(str));
+		const $p = document.createElement("p");
+		$p.innerText = String(str);
+		$feedback_box.appendChild($p);
+	}
+
+	//build a debounced (one parameter) function
+	function getDebouncedFunc(fun) {
+		let timeoutId = null;
+		
+		const delayedFun = (p) => {
+			if(timeoutId) {
+				clearTimeout(timeoutId);
+			}
+			timeoutId = setTimeout( () => fun(p), DEBOUNCE_THRESHOLD_MS);
+		}
+		
+		return delayedFun;
+	}
+	
+	//the debounced version of funA
+	const myDebouncedFunA = getDebouncedFunc(funA);
+	
+	document.getElementById("the-button")?.addEventListener("click", () => myDebouncedFunA("Button was clicked :-)"));
+	
+	document.getElementById("the-textarea")?.addEventListener("input", (e) => myDebouncedFunA(e.target.value));
+	
+	
+  </script>
+</body>
+ 
+</html>
