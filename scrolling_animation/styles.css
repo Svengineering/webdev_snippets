@@ -1,5 +1,5 @@
 /**
-
+monochrome palette:
 #41bb3f
 #4a9149
 #2be628
@@ -14,12 +14,17 @@
     box-sizing:border-box;
 }
 
+:root {
+    --scroll: 0;
+    color:rgb(25, 31, 25);
+}
+
 body, html {
     margin:0;
     padding:0;
     height:100%;
-    overflow-x:hidden;
     font-family: Arial, sans-serif;
+    background-color:#d7e2d7;
 }
 
 section {
@@ -32,8 +37,10 @@ header {
     width:100%;
     padding:5rem 5%;
     font-size:3rem;
-    color:#4a9149;
+    /*from rgb(74,145,74) to rgb(25,31,25)*/
+    color:rgb( calc( 74 - var(--scroll)*49/100 ), calc( 145 - var(--scroll)*114/100 ), calc( 74 - var(--scroll)*49/100 ));
     font-weight:600;
+    z-index:5;
 }
 
 .content {
@@ -45,10 +52,18 @@ header {
 .hero {
     display:grid;
     grid-template-columns:1fr 1fr;
+    position:sticky;
+    top:0;
+    /*
+        * the first 25% of scrolling the viewport: no translating 
+        * the next 75% of scrolling the viewport: translate up to -100%
+    */
+    translate: 0 calc(min( (var(--scroll) - 25) * 5/3 * -1%, 0px));
+    margin-bottom:25vh;
 }
 
 .right {
-    background-color:#daebda;
+    background-color:rgba(215, 236, 215, calc( max(1 - var(--scroll) * 2.5 / 100, 0) ));
 }
 
 .left {
@@ -58,6 +73,8 @@ header {
     flex-direction:column;
     padding-left: 10%;
     padding-right: 10%;
+    background-color:rgba(240, 245, 240, calc( max(1 - var(--scroll) * 2.5 / 100, 0) ) );
+
 }
 
 h1 {
