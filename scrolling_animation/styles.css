@@ -29,6 +29,7 @@ body, html {
 
 section {
     height:100vh;
+    position:relative;
 }
 
 header {
@@ -36,8 +37,11 @@ header {
     top: 0;
     width:100%;
     padding:5rem 5%;
-    font-size:3rem;
-    /*from rgb(74,145,74) to rgb(25,31,25)*/
+    /* 
+        the first 25% scrolling of the viewport: no change
+        the next 75% scrolling of the viewport: from 3.5rem to 2.5rem
+    */
+    font-size:calc( (3.5 - max(0, var(--scroll) - 25) / 75) * 1rem);
     color:rgb( calc( 74 - var(--scroll)*49/100 ), calc( 145 - var(--scroll)*114/100 ), calc( 74 - var(--scroll)*49/100 ));
     font-weight:600;
     z-index:5;
@@ -47,6 +51,7 @@ header {
     display:flex;
     flex-direction:column;
     align-items:center;
+    z-index:10;
 }
 
 .hero {
@@ -59,7 +64,7 @@ header {
         * the next 75% of scrolling the viewport: translate up to -100%
     */
     translate: 0 calc(min( (var(--scroll) - 25) * 5/3 * -1%, 0px));
-    margin-bottom:25vh;
+    margin-bottom:35vh;
 }
 
 .right {
@@ -83,4 +88,40 @@ h1 {
 
 p {
     font-size:2rem;
+}
+
+.showcase-imgs img{
+    width:30%;
+    position:fixed;
+    bottom:0;
+    z-index:3;
+    translate:-50% 100%;
+    left:50%;
+    transition: 
+        translate 0.5s ease-in-out, 
+        width 0.12s ease-in-out;
+}
+
+.showcase-imgs .show {
+    translate:-50% 0%;
+    transition: translate 0.5s ease-in-out;
+}
+
+.showcase-imgs .hero-section.show {
+    translate: 0 0;
+}
+
+.showcase-imgs .hero-section {
+
+    left:35%;
+    width: calc(15% + 15% * min(var(--scroll) * 2.5/ 100, 1));
+}
+
+[data-img-to-show] {
+    position: absolute;
+    top: 20%;
+}
+
+.hero [data-img-to-show] {
+    top: 50%;
 }

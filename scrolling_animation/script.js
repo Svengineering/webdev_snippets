@@ -16,3 +16,25 @@ function setScrollVar() {
 }
 
 //CSS var --scroll is initialized in a CSS file
+
+
+const observer = new IntersectionObserver((entries) => {
+    for(let i = entries.length - 1; i >= 0; i--) {
+        const entry = entries[i];
+        if(entry.isIntersecting) {
+            console.log("intersecting:", entry.target);
+            document.querySelectorAll('img.showcase').forEach((el) => {
+                el.classList.remove('show');
+            });
+
+            const imgToShow = document.querySelector(entry.target.dataset.imgToShow);
+            if(imgToShow) {
+                imgToShow.classList.add('show');
+            }
+        }
+    }
+});
+
+document.querySelectorAll('[data-img-to-show]').forEach((el) => {
+    observer.observe(el);
+});
